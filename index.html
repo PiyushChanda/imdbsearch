@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="{{url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+	<script type="text/javascript">
+	  $(function() {
+	    $('button').bind('click', function() {
+	      $.getJSON('http://localhost:9080/crawl.json?spider_name=movies&url=https://www.imdb.com/title/' + $('input[name="movieUrl"]').val(), {}, function(response) {
+
+			$(function() {
+				$('div.table').css('display', 'block')
+			    $.each(response.items, function(i, item) {
+			    	var $a = $('<a>').append(item.url)
+			    	$a.attr('href', item.url)
+			        var $tr = $('<tr>').append(
+			        	$('<td>').text(item.name + ' (' + item.year + ')'),
+			            $('<td>').append($a),
+			            $('<td>').text(item.imdb_rating),
+			            $('<td>').text(item.metacritic_score),
+			        ).appendTo('#records_table');
+			    });
+			});
+
+	      });
+	      return false;
+	    });
+	  });
+	</script>
+	<style type="text/css">
+		table {
+			margin-top: 25px;
+			height: 300px;
+			display: inline-block;
+			overflow-y: scroll;
+			border-collapse: collapse;
+			position: relative;
+		}
+		th {
+			text-align: center;
+			color: white;
+			background-color: black;
+			padding: 3px 3px;
+			border: 1px solid black;
+			position: sticky;
+		}
+		tr, td {
+			text-align: center;
+			font-family: monospace;
+			padding: 3px 3px;
+			border: 1px solid black;
+		}
+		tr:nth-child(2) {
+			text-align: center;
+			font-family: monospace;
+			padding: 3px 3px;
+			border: 1px solid black;
+			background-color: red;
+		}
+		.button {
+			  background-color: green;
+			  border: none;
+			  color: white;
+			  padding: 3px 9px;
+			  text-align: center;
+			  text-decoration: none;
+			  display: inline-block;
+			  font-size: 12px;
+			  font-family: monospace;
+			  border-radius: 4px;
+			}
+		a:link {
+			color: blue;
+		}
+		a:visited {
+			color: #4CAF50;
+		}
+		a:hover {
+			color: hotpink;
+		}
+		a:active {
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+<p style = "font-family: monospace; white-space: pre; text-align: center; font-weight: 500; margin-top: 50px"> _____ __  __ _____  ____     _____                     _     
+|_   _|  \/  |  __ \|  _ \   / ____|                   | |    
+  | | | \  / | |  | | |_) | | (___   ___  __ _ _ __ ___| |__  
+  | | | |\/| | |  | |  _ <   \___ \ / _ \/ _` | '__/ __| '_ \ 
+ _| |_| |  | | |__| | |_) |  ____) |  __/ (_| | | | (__| | | |
+|_____|_|  |_|_____/|____/  |_____/ \___|\__,_|_|  \___|_| |_|</p>
+<div style="margin-top: 3px; text-align: center">
+	<p style="font-family: monospace;">By Piyush Kanti Chanda</p>
+</div>
+<div style="text-align: center;">
+	<input type="text" id="url" name="movieUrl" style="border-width: 1px; border-color: black;">
+</div>
+<div style="text-align: center; margin-top: 12px">
+	<button class = 'button' type="submit">Search</button>
+</div>
+<div class="table" style="text-align: center; display: none;">
+	<table class="table" id="records_table">
+		<tr>
+			<th>Movie Name</th>
+			<th>Movie URL</th>
+			<th>Imdb Score</th>
+			<th>Metacritic Score</th>
+		</tr>
+	</table>
+</div>
+</body>
+</html>
